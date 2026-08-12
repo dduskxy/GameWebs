@@ -2,7 +2,6 @@ import { useState, useCallback } from 'react';
 import confetti from 'canvas-confetti';
 import { Play, RefreshCcw, CheckCircle, XCircle, Crown, Heart, Sun, ShieldCheck, Award } from 'lucide-react';
 import StoryCutscene from './components/StoryCutscene';
-import StoryIntro from './components/StoryIntro';
 import useGameAudio from './hooks/useGameAudio';
 import MagicCursor from './components/MagicCursor';
 import GroundEnergy from './components/GroundEnergy';
@@ -127,14 +126,14 @@ function shuffleArray<T>(array: T[]): T[] {
   return newArr;
 }
 
-type GameState = 'intro' | 'start' | 'playing' | 'win' | 'gameover';
+type GameState = 'start' | 'playing' | 'win' | 'gameover';
 type FadeState = 'visible' | 'fading-out' | 'fading-in';
 
 const CHOICE_COLORS = ['choice-red', 'choice-blue', 'choice-yellow'];
 const CHOICE_LETTERS = ['ก', 'ข', 'ค'];
 
 function App() {
-  const [gameState, setGameState] = useState<GameState>('intro');
+  const [gameState, setGameState] = useState<GameState>('start');
   const [currentQIndex, setCurrentQIndex] = useState(0);
   const [lives, setLives] = useState(3);
   
@@ -258,14 +257,6 @@ function App() {
     <div className="game-wrapper">
       <MagicCursor />
       <GroundEnergy />
-
-      {/* CINEMATIC STORY INTRO — shown first before start screen */}
-      {gameState === 'intro' && (
-        <StoryIntro
-          onComplete={() => setGameState('start')}
-          title="สุวรรณสามชาดก"
-        />
-      )}
 
       {/* CLEAN ESSENTIAL STATS HUD */}
       {gameState === 'playing' && (

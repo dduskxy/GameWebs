@@ -1,0 +1,300 @@
+/* ============================================================
+   FULL-BLEED CINEMATIC STORY CUTSCENE
+   Image fills 100% of modal — text overlays on rich gradient
+   ============================================================ */
+
+.cutscene-overlay {
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  background: rgba(12, 10, 9, 0.88);
+  backdrop-filter: blur(14px);
+  z-index: 999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: clamp(12px, 3vw, 24px);
+  touch-action: manipulation;
+  overflow: hidden !important;
+}
+
+.fade-in-cinematic {
+  animation: cutsceneReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes cutsceneReveal {
+  0%   { opacity: 0; transform: scale(0.9) translateY(12px); filter: blur(20px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
+}
+
+/* ── MODAL SHELL ── */
+.cutscene-modal {
+  position: relative;
+  border: 4px solid #78350f;
+  box-shadow:
+    0 0 0 1px rgba(251, 191, 36, 0.35),
+    0 30px 80px rgba(0, 0, 0, 0.85),
+    inset 0 0 60px rgba(180, 83, 9, 0.12);
+  border-radius: clamp(16px, 3vw, 28px);
+  width: 100%;
+  max-width: 920px;
+  /* Full height of available overlay space */
+  height: clamp(480px, 88vh, 720px);
+  overflow: hidden !important;
+  display: flex;
+  flex-direction: column;
+  background: #0c0a09;
+}
+
+/* ── FULL-BLEED IMAGE LAYER (absolute, fills entire modal) ── */
+.cutscene-image-container {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+/* Ambient blurred backdrop */
+.cutscene-blur-bg {
+  position: absolute;
+  inset: -15%;
+  width: 130%;
+  height: 130%;
+  object-fit: cover;
+  filter: blur(30px) brightness(0.55) saturate(1.3);
+  transform: scale(1.1);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Main image — contain so nothing is cropped, centered */
+.cutscene-contain-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center 38%;
+  z-index: 2;
+  pointer-events: none;
+  filter: drop-shadow(0 8px 30px rgba(0, 0, 0, 0.6));
+  animation: imageBreathe 8s ease-in-out infinite alternate;
+}
+
+@keyframes imageBreathe {
+  from { transform: scale(1); }
+  to   { transform: scale(1.025); }
+}
+
+/* Ambient floating particles */
+.cutscene-ambient-particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 3;
+}
+
+.cutscene-p {
+  position: absolute;
+  font-size: 1.3rem;
+  opacity: 0;
+  animation: floatUp 4s infinite linear;
+}
+.cutscene-p.p1 { left: 12%; animation-delay: 0s;   animation-duration: 3.8s; }
+.cutscene-p.p2 { left: 38%; animation-delay: 1.2s; animation-duration: 4.5s; }
+.cutscene-p.p3 { left: 63%; animation-delay: 0.6s; animation-duration: 4.0s; }
+.cutscene-p.p4 { left: 84%; animation-delay: 1.8s; animation-duration: 5.0s; }
+
+@keyframes floatUp {
+  0%   { opacity:0; bottom:-8%; transform: translateY(0) scale(0.85); }
+  15%  { opacity:0.9; }
+  85%  { opacity:0.65; }
+  100% { opacity:0; bottom:108%; transform: translateY(-16px) scale(1.15); }
+}
+
+/* ── CINEMATIC BADGE (top-left) ── */
+.cutscene-badge {
+  position: absolute;
+  top: clamp(14px, 2.5vw, 22px);
+  left: clamp(14px, 2.5vw, 22px);
+  background: linear-gradient(135deg, rgba(120, 53, 15, 0.92) 0%, rgba(59, 18, 2, 0.92) 100%);
+  border: 1.5px solid #fbbf24;
+  color: #fef08a;
+  padding: 5px 16px;
+  border-radius: 999px;
+  font-size: clamp(0.75rem, 1.4vw, 0.9rem);
+  font-weight: 800;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.55);
+  font-family: 'Prompt', 'Kanit', sans-serif;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  z-index: 6;
+}
+
+/* ── RICH GRADIENT SCRIM (bottom ~55% of modal) ── */
+.cutscene-vignette {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    transparent 22%,
+    rgba(8, 5, 2, 0.25) 42%,
+    rgba(8, 5, 2, 0.78) 62%,
+    rgba(8, 5, 2, 0.97) 80%,
+    #080502 100%
+  );
+  pointer-events: none;
+  z-index: 4;
+}
+
+/* ── TEXT CONTENT — overlaid at bottom ── */
+.cutscene-content {
+  position: absolute;
+  bottom: 0;
+  left: 0; right: 0;
+  z-index: 5;
+  padding: clamp(16px, 2.5vw, 28px) clamp(20px, 4vw, 44px) clamp(20px, 3vw, 32px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  animation: contentSlideUp 0.5s 0.25s cubic-bezier(0.16,1,0.3,1) both;
+}
+
+@keyframes contentSlideUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Title */
+.cutscene-title {
+  color: #fef08a;
+  font-size: clamp(1.2rem, 2.8vw, 1.9rem);
+  font-weight: 900;
+  margin: 0;
+  font-family: 'Prompt', 'Kanit', sans-serif;
+  text-shadow:
+    0 2px 12px rgba(0, 0, 0, 0.9),
+    0 0 30px rgba(251, 191, 36, 0.35);
+  text-align: center;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+/* HIGHLIGHT PILLS */
+.story-highlights-pills {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+}
+
+.story-pill {
+  background: rgba(251, 191, 36, 0.14);
+  border: 1.5px solid rgba(251, 191, 36, 0.55);
+  color: #fde68a;
+  padding: 3px 12px;
+  border-radius: 999px;
+  font-size: clamp(0.72rem, 1.2vw, 0.88rem);
+  font-weight: 700;
+  font-family: 'Prompt', 'Kanit', sans-serif;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* CHARACTER QUOTE BOX */
+.story-quote-box {
+  background: rgba(255, 255, 255, 0.08);
+  border-left: 3px solid #f59e0b;
+  border-radius: 0 12px 12px 0;
+  padding: 8px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  max-width: 720px;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.story-quote-box::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, transparent 40%);
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+.quote-icon {
+  flex-shrink: 0;
+  opacity: 0.85;
+}
+
+.quote-text {
+  font-family: 'Prompt', 'Kanit', sans-serif;
+  font-size: clamp(0.8rem, 1.4vw, 1rem);
+  font-weight: 700;
+  font-style: italic;
+  color: #fde68a;
+  margin: 0;
+  text-align: left;
+  line-height: 1.4;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.7);
+}
+
+/* DESCRIPTION */
+.cutscene-description {
+  color: rgba(255, 248, 220, 0.92);
+  font-size: clamp(0.82rem, 1.6vw, 1.08rem);
+  line-height: 1.6;
+  margin: 0;
+  max-width: 780px;
+  font-weight: 600;
+  font-family: 'Prompt', 'Kanit', sans-serif;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.85);
+  text-align: center;
+}
+
+/* CONTINUE BUTTON */
+.btn-continue {
+  background: linear-gradient(135deg, #d97706 0%, #b45309 50%, #78350f 100%);
+  color: #ffffff;
+  border: 2.5px solid #fbbf24;
+  padding: clamp(8px, 1.4vh, 13px) clamp(24px, 3.5vw, 44px);
+  font-size: clamp(0.95rem, 2vw, 1.25rem);
+  font-weight: 900;
+  border-radius: 999px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 5px 0 #451a03, 0 10px 24px rgba(0, 0, 0, 0.6);
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  font-family: 'Prompt', 'Kanit', sans-serif;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  min-height: 44px;
+}
+
+.btn-continue:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 9px 0 #451a03, 0 16px 30px rgba(0, 0, 0, 0.65);
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 50%, #b45309 100%);
+}
+
+.btn-continue:active {
+  transform: translateY(2px);
+  box-shadow: 0 3px 0 #451a03, 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* ── PULSE GLOW ── */
+@keyframes pulseGlow {
+  0%, 100% { transform: scale(1); box-shadow: 0 5px 0 #451a03, 0 10px 24px rgba(0,0,0,0.6), 0 0 0 0 rgba(217,119,6,0); }
+  50%       { transform: scale(1.012); box-shadow: 0 5px 0 #451a03, 0 10px 24px rgba(0,0,0,0.6), 0 0 0 8px rgba(217,119,6,0.28); }
+}
+.pulse-glow { animation: pulseGlow 2s ease-in-out infinite; }

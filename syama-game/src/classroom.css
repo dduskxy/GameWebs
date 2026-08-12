@@ -1,0 +1,91 @@
+/* ============================================================
+   DIEGETIC UI (In-World Thematic Elements) for Syama Jataka
+   ============================================================ */
+
+/* 1. The Drop Zone - Golden Water Pot (หม้อน้ำทองคำ) */
+.drop-zone-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.slot {
+  width: 100%;
+  max-width: 600px;
+  height: 200px;
+  /* Glowing altar style */
+  background: radial-gradient(ellipse at center, rgba(255, 215, 0, 0.15) 0%, rgba(0,0,0,0) 70%);
+  border: 2px dashed rgba(255, 215, 0, 0.4);
+  border-radius: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 2;
+}
+
+/* Massive spinning magic circle behind the pot */
+.slot::before {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 250px; height: 250px;
+  margin-top: -125px; margin-left: -125px;
+  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="none" stroke="%23FFD700" stroke-width="1" stroke-dasharray="4 4" opacity="0.5"/><circle cx="50" cy="50" r="40" fill="none" stroke="%23FFD700" stroke-width="0.5" opacity="0.3"/><polygon points="50,5 95,75 5,75" fill="none" stroke="%23FFD700" stroke-width="0.5" opacity="0.3"/><polygon points="50,95 95,25 5,25" fill="none" stroke="%23FFD700" stroke-width="0.5" opacity="0.3"/></svg>') no-repeat center;
+  background-size: contain;
+  animation: spin-rune 15s linear infinite;
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0.8;
+  will-change: transform;
+}
+
+@keyframes spin-rune {
+  100% { transform: rotate(360deg); }
+}
+
+.slot-over {
+  background: radial-gradient(ellipse at center, rgba(255, 215, 0, 0.3) 0%, rgba(0,0,0,0) 70%);
+  border: 2px solid #FFD700;
+  box-shadow: 0 0 30px rgba(255, 215, 0, 0.4), inset 0 0 20px rgba(255, 215, 0, 0.2);
+  transform: scale(1.02);
+}
+
+.drop-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  color: #FFD700;
+  font-size: 1.6rem;
+  font-weight: 600;
+  pointer-events: none;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+}
+
+/* The Water Pot SVG Icon */
+.magic-circle {
+  width: 80px;
+  height: 80px;
+  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23FFD700" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2h8M10 2v4M14 2v4M12 6c-4.418 0-8 3.582-8 8s3.582 8 8 8 8-3.582 8-8-3.582-8-8-8z"/><path d="M12 10v4M10 12h4"/></svg>') no-repeat center;
+  background-size: contain;
+  animation: pulse-pot 2s infinite alternate;
+}
+
+@keyframes pulse-pot {
+  0% { transform: translateY(0) scale(1); filter: drop-shadow(0 0 5px #FFD700); }
+  100% { transform: translateY(-5px) scale(1.05); filter: drop-shadow(0 0 15px #FFD700); }
+}
+
+.status-icon-badge {
+  filter: drop-shadow(0 0 8px currentColor);
+  animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes popIn {
+  0% { transform: scale(0); }
+  100% { transform: scale(1); }
+}
